@@ -17,69 +17,32 @@
 				[2,5,8], 
 				[0,4,8],
 				[2,4,6]
-			],
-			wayGameEnded: null
+			]
 		}},
+
 		updateState: function(id) {
-			var tempBoard = this.get("board");
-			tempBoard[id] = this.player();
-			this.set("board", tempBoard);
+			// your code here
 		},
+
 		tie: function() {
-		  var spotsFilled = 0;
-		  this.get("board").forEach(function(element) {
-		  	if (element) spotsFilled += 1;
-		  });
-			return spotsFilled >= 9;
+			// your code here
 		},
+		
 		gameOver: function() {
-			if (this.winnerCheck()) {
-				this.set("wayGameEnded", "win");
-				return true;	
-			} else if (this.tie()) {
-				this.set("wayGameEnded", "tie");
-				return true;
-			} else {
-				return false;
-			}
+			// your code here
 		},
+		
 		player: function() {
-			return this.get("turn") % 2 == 0 ? "X": "O"
+			// your code here
 		},
-		playerLocations: function() {
-			var locations = [];
-			var playerz = this.player();
-			var tempBoard = this.get("board");
-			tempBoard.forEach(function(piece, i) {
-				if (piece == playerz) locations.push(i);
-			});
-			return locations;
-		},
+		
 		winnerCheck: function() {
-			var locations = this.playerLocations();
-			var winner = false;
-			this.get("winningCombos").forEach(function(combo) {
-				var wonThis = true;
-				combo.forEach(function(id) {
-					if ($.inArray(id, locations) < 0) wonThis = false;
-				});
-				if (wonThis) winner = true;
-			});
-			return winner;
+			// your code here
 		},
-		incrementTurn: function() {
-			var tempTurn = this.get("turn");
-			this.set("turn", tempTurn + 1);
-			return this.get("turn");
-		},
+		
 		doTurn: function(id) {
-			this.updateState(id);
-			if (this.gameOver()) {
-				var tieOrWin = this.get("wayGameEnded");
-				this.trigger(tieOrWin, this.player());
-			} else {
-				this.incrementTurn();
-			}
-		}	
+			// your code here
+		}
+		
 	})
 })();
