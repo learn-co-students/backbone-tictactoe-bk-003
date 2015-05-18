@@ -86,6 +86,28 @@ describe('board', function() {
       $("#3").click();
       expect(spy).toHaveBeenCalledWith(3)    
     });
+
+    it("the game's board matches the table", function() {
+      setFixtures('<div id="container"></div>'); 
+      var gameView = new app.GameView;
+      $("#0").click();
+      $("#1").click();
+      $("#4").click();
+      $("#8").click();
+      $("#2").click();
+      $("#6").click();
+      $("#7").click();
+      $("#3").click();
+      var tempBoard = gameView.game.get("board");
+      [0,4,2,7].forEach(function(space) {
+        expect(tempBoard[space]).toEqual("X");
+        expect($("#" + space).text()).toEqual("X");
+      });
+      [1,8,6,3].forEach(function(space) {
+        expect(tempBoard[space]).toEqual("O");
+        expect($("#" + space).text()).toEqual("O");
+      });
+    });
   });
 
   describe( "#win", function() {
@@ -180,3 +202,4 @@ describe('board', function() {
     });
   });
 });
+    

@@ -172,6 +172,13 @@ describe('game', function() {
   });
 
   describe("#doTurn Part 2", function() {
+    it("when doTurn is passed a number between 0-8, trigger is called and passed the player and the number", function() {
+      spyOn(game, "trigger");
+      game.doTurn(0);
+      expect(game.trigger).toHaveBeenCalledWith("X", 0);
+      game.doTurn(3);
+      expect(game.trigger).toHaveBeenCalledWith("O", 3);
+    });
     it("when player X wins horizontally, trigger is called on the game and passed two params: 'win' and 'X'", function() {
       spyOn(game, "trigger");
       game.doTurn(0);
@@ -241,6 +248,16 @@ describe('game', function() {
       game.doTurn(6);
       game.doTurn(7);
       game.doTurn(3);
+      // _X_|_O_|_X_
+      // _O_|_X_|_5_
+      //  O | X | O
+      var tempBoard = game.get("board");
+      [0,4,2,7].forEach(function(space) {
+        expect(tempBoard[space]).toEqual("X");
+      });
+      [1,8,6,3].forEach(function(space) {
+        expect(tempBoard[space]).toEqual("O");
+      });
       game.doTurn(5);
       expect(game.trigger).toHaveBeenCalledWith("tie", "X");
     });
