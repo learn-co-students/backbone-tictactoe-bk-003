@@ -8,6 +8,6 @@ You'll be modifying only two files to pass this lab, the model which is here: `j
 
 ## Game View Hints
 
-* [$el](http://backbonejs.org/#View-$el) in this section
+* [$el](http://backbonejs.org/#View-$el)
 * [Event.target](https://api.jquery.com/event.target/)
 * [Get id of element using jQuery](http://stackoverflow.com/a/3239600/2890716)
