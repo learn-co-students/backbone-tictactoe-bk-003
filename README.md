@@ -4,7 +4,7 @@ You'll be modifying only two files to pass this lab, the model which is here: `j
 
 To view your game, you can simply open `index.html` in the browser.
 
-Right click on the link below and select "Save link as..." to see a video of how your calculator should behave.
+Right click on the link below and select "Save link as..." to see a video of how your game should behave.
 
 [backbone tic-tac-toe game video](https://s3-us-west-2.amazonaws.com/web-dev-readme-photos/js/backbone-tic-tac-toe.mp4)
 
