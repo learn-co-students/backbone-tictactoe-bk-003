@@ -34,19 +34,16 @@ describe('game', function() {
       game.doTurn(0);
       expect(game.get("board")[0]).toEqual("X");
     });
-
     it("double-checking that `updateState()` was called", function() {
       spyOn(game, "updateState");
       game.doTurn(1);
       expect(game.updateState).toHaveBeenCalledWith(1);
     });
-
     it("calls on `gameOver()`", function() {
       spyOn(game, "gameOver");
       game.doTurn(3);
       expect(game.gameOver).toHaveBeenCalled();
     });
-
     it("the *final* thing it does is to increment turn by one", function() {
       var turnCount = game.get("turn");
       game.doTurn(8);
@@ -175,7 +172,16 @@ describe('game', function() {
   });
 
   describe("#doTurn Part 2", function() {
-    it("should tell me if there is a winning combo on the board for the current player (vertical)", function() {
+    it("when player X wins horizontally, trigger is called on the game and passed two params: 'win' and 'X'", function() {
+      spyOn(game, "trigger");
+      game.doTurn(0);
+      game.doTurn(4);
+      game.doTurn(1);
+      game.doTurn(3);
+      game.doTurn(2);
+      expect(game.trigger).toHaveBeenCalledWith("win", "X");
+    });
+    it("when player X wins vertically, trigger is called on the game and passed two params: 'win' and 'X'", function() {
       spyOn(game, "trigger");
       game.doTurn(0);
       game.doTurn(1);
@@ -184,17 +190,46 @@ describe('game', function() {
       game.doTurn(4);
       game.doTurn(5);
       game.doTurn(6);
-      expect(game.trigger).toHaveBeenCalledWith("win", "X")
+      expect(game.trigger).toHaveBeenCalledWith("win", "X");
     });
- 
-    it("should tell me if there is a winning combo on the board for the current player (diagonal)", function() {
+    it("when player X wins diagonally, trigger is called on the game and passed two params: 'win' and 'X'", function() {
+      spyOn(game, "trigger");
       game.doTurn(0);
       game.doTurn(1);
       game.doTurn(4);
       game.doTurn(2);
-      spyOn(game, "trigger");
       game.doTurn(8);
-      expect(game.trigger).toHaveBeenCalledWith("win", "X")
+      expect(game.trigger).toHaveBeenCalledWith("win", "X");
+    });
+    it("when player O wins horizontally, trigger is called on the game and passed two params: 'win' and 'O'", function() {
+      spyOn(game, "trigger");
+      game.doTurn(6);
+      game.doTurn(3);    
+      game.doTurn(8);
+      game.doTurn(4);
+      game.doTurn(2);
+      game.doTurn(5);
+      expect(game.trigger).toHaveBeenCalledWith("win", "O");
+    });
+    it("when player O wins vertically, trigger is called on the game and passed two params: 'win' and 'O'", function() {
+      spyOn(game, "trigger");
+      game.doTurn(0);
+      game.doTurn(2);    
+      game.doTurn(4);
+      game.doTurn(5);
+      game.doTurn(1);
+      game.doTurn(8);
+      expect(game.trigger).toHaveBeenCalledWith("win", "O");
+    });
+    it("when player O wins diagonally, trigger is called on the game and passed two params: 'win' and 'O'", function() {
+      spyOn(game, "trigger");
+      game.doTurn(3);
+      game.doTurn(2);
+      game.doTurn(0);    
+      game.doTurn(4);
+      game.doTurn(7);
+      game.doTurn(6);
+      expect(game.trigger).toHaveBeenCalledWith("win", "O");
     });
   });
 });
