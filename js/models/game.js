@@ -1,19 +1,13 @@
-function cleanArray(actual){
-  var newArray = [];
-  actual.forEach(function(element) {
-  	if (element) newArray.push(element);
-  });
-  return newArray;
-}
-
 (function() {
 	app = {};
 	app.Game = Backbone.Model.extend({
 		defaults : function (){ return {
 			turn : 0,
-			board : [null, null, null,
-							null, null, null, 
-							null, null, null],
+			board : [
+			  null, null, null,
+				null, null, null, 
+				null, null, null
+			],
 			winningCombos : [
 				[0,3,6],
 				[0,1,2],
@@ -23,7 +17,8 @@ function cleanArray(actual){
 				[2,5,8], 
 				[0,4,8],
 				[2,4,6]
-			]
+			],
+			wayGameEnded : null
 		}},
 		updateState : function(id) {
 			var tempBoard = this.get("board");
@@ -39,10 +34,10 @@ function cleanArray(actual){
 		},
 		gameOver : function() {
 			if (this.winnerCheck()) {
-				console.log("Player " + this.player() + " Won!");
+				this.set("wayGameEnded", "win");
 				return true;	
 			} else if (this.tie()) {
-				console.log("Tie");
+				this.set("wayGameEnded", "tie");
 				return true;
 			} else {
 				return false;
@@ -79,11 +74,9 @@ function cleanArray(actual){
 		},
 		doTurn : function(id) {
 			this.updateState(id);
-			var over = this.gameOver();
-			if (over) {
-				var currentPlayer = this.player();
-				debugger;
-				this.trigger(over, currentPlayer);
+			if (this.gameOver()) {
+				var tieOrWin = this.get("wayGameEnded");
+				this.trigger(tieOrWin, this.player());
 			} else {
 				this.incrementTurn();
 			}
