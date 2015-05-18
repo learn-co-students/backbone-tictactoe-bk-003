@@ -1,9 +1,9 @@
 # A list of javascript files required for the project, in dependency order
 javascripts:
   files:
+    - js/lib/jquery-min.js
     - js/lib/underscore-min.js
     - js/lib/backbone-min.js
-    - js/lib/jquery-min.js
     - js/lib/jasmine-jquery.js
     - js/models/game.js
     - js/views/gameview.js
