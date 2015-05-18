@@ -1,14 +1,14 @@
 (function() {
 	app = {};
 	app.Game = Backbone.Model.extend({
-		defaults : function (){ return {
-			turn : 0,
-			board : [
+		defaults: function (){ return {
+			turn: 0,
+			board: [
 			  null, null, null,
 				null, null, null, 
 				null, null, null
 			],
-			winningCombos : [
+			winningCombos: [
 				[0,3,6],
 				[0,1,2],
 				[3,4,5],
@@ -18,21 +18,21 @@
 				[0,4,8],
 				[2,4,6]
 			],
-			wayGameEnded : null
+			wayGameEnded: null
 		}},
-		updateState : function(id) {
+		updateState: function(id) {
 			var tempBoard = this.get("board");
 			tempBoard[id] = this.player();
 			this.set("board", tempBoard);
 		},
-		tie : function() {
+		tie: function() {
 		  var spotsFilled = 0;
 		  this.get("board").forEach(function(element) {
 		  	if (element) spotsFilled += 1;
 		  });
 			return spotsFilled >= 9;
 		},
-		gameOver : function() {
+		gameOver: function() {
 			if (this.winnerCheck()) {
 				this.set("wayGameEnded", "win");
 				return true;	
@@ -43,8 +43,8 @@
 				return false;
 			}
 		},
-		player : function() {
-			return this.get("turn") % 2 == 0 ? "X" : "O"
+		player: function() {
+			return this.get("turn") % 2 == 0 ? "X": "O"
 		},
 		playerLocations: function() {
 			var locations = [];
@@ -55,7 +55,7 @@
 			});
 			return locations;
 		},
-		winnerCheck : function() {
+		winnerCheck: function() {
 			var locations = this.playerLocations();
 			var winner = false;
 			this.get("winningCombos").forEach(function(combo) {
@@ -67,12 +67,12 @@
 			});
 			return winner;
 		},
-		incrementTurn : function() {
+		incrementTurn: function() {
 			var tempTurn = this.get("turn");
 			this.set("turn", tempTurn + 1);
 			return this.get("turn");
 		},
-		doTurn : function(id) {
+		doTurn: function(id) {
 			this.updateState(id);
 			if (this.gameOver()) {
 				var tieOrWin = this.get("wayGameEnded");
