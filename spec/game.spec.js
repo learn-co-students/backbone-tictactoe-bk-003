@@ -185,7 +185,7 @@ describe('game', function() {
       spyOn(game, "trigger");
       game.doTurn(0);
       game.doTurn(1);
-      game.doTurn(2);    
+      game.doTurn(2);
       game.doTurn(3);
       game.doTurn(4);
       game.doTurn(5);
@@ -204,7 +204,7 @@ describe('game', function() {
     it("when player O wins horizontally, trigger is called on the game and passed two params: 'win' and 'O'", function() {
       spyOn(game, "trigger");
       game.doTurn(6);
-      game.doTurn(3);    
+      game.doTurn(3);
       game.doTurn(8);
       game.doTurn(4);
       game.doTurn(2);
@@ -214,7 +214,7 @@ describe('game', function() {
     it("when player O wins vertically, trigger is called on the game and passed two params: 'win' and 'O'", function() {
       spyOn(game, "trigger");
       game.doTurn(0);
-      game.doTurn(2);    
+      game.doTurn(2);
       game.doTurn(4);
       game.doTurn(5);
       game.doTurn(1);
@@ -225,11 +225,24 @@ describe('game', function() {
       spyOn(game, "trigger");
       game.doTurn(3);
       game.doTurn(2);
-      game.doTurn(0);    
+      game.doTurn(0);
       game.doTurn(4);
       game.doTurn(7);
       game.doTurn(6);
       expect(game.trigger).toHaveBeenCalledWith("win", "O");
+    });
+    it("when the board is full but there are no winners, trigger is called on the game and passed two params: 'tie' and 'X'", function() {
+      spyOn(game, "trigger");
+      game.doTurn(0);
+      game.doTurn(1);
+      game.doTurn(4);
+      game.doTurn(8);
+      game.doTurn(2);
+      game.doTurn(6);
+      game.doTurn(7);
+      game.doTurn(3);
+      game.doTurn(5);
+      expect(game.trigger).toHaveBeenCalledWith("tie", "X");
     });
   });
 });
