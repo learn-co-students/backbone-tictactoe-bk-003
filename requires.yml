@@ -8,5 +8,5 @@ javascripts:
     - js/models/game.js
     - js/views/gameview.js
   specs:
+    - spec/game.spec.js
     - spec/gameview.spec.js
-    # - spec/game.spec.js

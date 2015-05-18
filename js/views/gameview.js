@@ -6,7 +6,8 @@
 		},
 
 		initialize : function() {
-
+			this.game = new app.Game();
+			
 		},
 
 		render : function() {

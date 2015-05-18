@@ -1,3 +1,11 @@
+function cleanArray(actual){
+  var newArray = [];
+  actual.forEach(function(element) {
+  	if (element) newArray.push(element);
+  });
+  return newArray;
+}
+
 (function() {
 	app = {};
 	app.Game = Backbone.Model.extend({
@@ -6,27 +14,79 @@
 			board : [null, null, null,
 							null, null, null, 
 							null, null, null],
-			winningCombos : [[0,1,2], [3,4,5], [6,7,8],
-								 [0,3,6], [1,4,7], [2,5,8], 
-								 [0,4,8], [2,4,6]]
+			winningCombos : [
+				[0,3,6],
+				[0,1,2],
+				[3,4,5],
+				[6,7,8],
+				[1,4,7],
+				[2,5,8], 
+				[0,4,8],
+				[2,4,6]
+			]
 		}},
-		updateState : function() {
-			
+		updateState : function(id) {
+			var tempBoard = this.get("board");
+			tempBoard[id] = this.player();
+			this.set("board", tempBoard);
 		},
 		tie : function() {
-		
+		  var spotsFilled = 0;
+		  this.get("board").forEach(function(element) {
+		  	if (element) spotsFilled += 1;
+		  });
+			return spotsFilled >= 9;
 		},
 		gameOver : function() {
-			
+			if (this.winnerCheck()) {
+				console.log("Player " + this.player() + " Won!");
+				return true;	
+			} else if (this.tie()) {
+				console.log("Tie");
+				return true;
+			} else {
+				return false;
+			}
 		},
 		player : function() {
-			
+			return this.get("turn") % 2 == 0 ? "X" : "O"
 		},
-		checkCells : function() {
-			
+		playerLocations: function() {
+			var locations = [];
+			var playerz = this.player();
+			var tempBoard = this.get("board");
+			tempBoard.forEach(function(piece, i) {
+				if (piece == playerz) locations.push(i);
+			});
+			return locations;
 		},
-		doTurn : function() {
-			
+		winnerCheck : function() {
+			var locations = this.playerLocations();
+			var winner = false;
+			this.get("winningCombos").forEach(function(combo) {
+				var wonThis = true;
+				combo.forEach(function(id) {
+					if ($.inArray(id, locations) < 0) wonThis = false;
+				});
+				if (wonThis) winner = true;
+			});
+			return winner;
+		},
+		incrementTurn : function() {
+			var tempTurn = this.get("turn");
+			this.set("turn", tempTurn + 1);
+			return this.get("turn");
+		},
+		doTurn : function(id) {
+			this.updateState(id);
+			var over = this.gameOver();
+			if (over) {
+				var currentPlayer = this.player();
+				debugger;
+				this.trigger(over, currentPlayer);
+			} else {
+				this.incrementTurn();
+			}
 		}	
 	})
 })();
