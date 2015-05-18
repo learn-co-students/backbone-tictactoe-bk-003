@@ -1,9 +1,8 @@
 'use strict';
-describe('board', function() {
 
+describe('board', function() {
   describe( "#initialize", function() {
     it("should set the game property of the view to be an instance of the game model", function() {
-      debugger;
       var gameView = new app.GameView();
       expect(gameView.game).not.toBeUndefined();
     });     
@@ -16,28 +15,19 @@ describe('board', function() {
         var gameView = new app.GameView;
         gameView.game.trigger("X");
         expect(spy).toHaveBeenCalled();
-      });     
-    });
-
-    describe( "#initialize", function() {
+      });
       it("should wire up the O event listeners on the model", function() {
         var spy = spyOn(app.GameView.prototype, "drawO");
         var gameView = new app.GameView;
         gameView.game.trigger("O");
         expect(spy).toHaveBeenCalled();
-      });     
-    });
-
-    describe( "#initialize", function() {
+      });
       it("should wire up the tie event listeners on the model", function() {
         var spy = spyOn(app.GameView.prototype, "tie");
         var gameView = new app.GameView;
         gameView.game.trigger("tie");
         expect(spy).toHaveBeenCalled();
-      });     
-    });
-
-    describe( "#initialize", function() {
+      });
       it("should wire up the win event listeners on the model", function() {
         var spy = spyOn(app.GameView.prototype, "win")
         var gameView = new app.GameView;
@@ -54,14 +44,6 @@ describe('board', function() {
     });
     describe( "#initialize", function() {
       it("should call render", function() {
-        spyOn(gameView, "addIds");
-        gameView.initialize();
-        expect(gameView.addIds).toHaveBeenCalled();
-      });     
-    });
-
-    describe( "#initialize", function() {
-      it("should add the ids to the dom", function() {
         spyOn(gameView, "render");
         gameView.initialize();
         expect(gameView.render).toHaveBeenCalled();
@@ -77,7 +59,7 @@ describe('board', function() {
     });
     describe( "#render & addIds", function() {
       it("should create a board in HTML when its initialized", function() {
-        expect($("#container")).toContainHtml('<table border="1" cellpadding="40"><tbody><tr><td id="0"></td><td id="1"></td><td id="2"></td></tr><tr><td id="3"></td><td id="4"></td><td id="5"></td></tr><tr><td id="6"></td><td id="7"></td><td id="8"></td></tr></tbody></table>');
+        expect($("#container")).toContainHtml('<div id="message"></div><table border="1" cellpadding="40"><tbody><tr><td id="0"></td><td id="1"></td><td id="2"></td></tr><tr><td id="3"></td><td id="4"></td><td id="5"></td></tr><tr><td id="6"></td><td id="7"></td><td id="8"></td></tr></tbody></table>');
       });     
     });
 
@@ -99,10 +81,102 @@ describe('board', function() {
   describe( "#handleClick", function() {
     it("should tell the game what element was clicked", function() {
       setFixtures('<div id="container"></div>'); 
-      var spy = spyOn(app.Game.prototype, "doTurn")
+      var spy = spyOn(app.Game.prototype, "doTurn");
       var gameView = new app.GameView;
-      $("#3").click()
+      $("#3").click();
       expect(spy).toHaveBeenCalledWith(3)    
-    });     
+    });
+  });
+
+  describe( "#win", function() {
+    it("gets called when there is a winner", function() {
+      setFixtures('<div id="container"></div>');
+      var spy = spyOn(app.GameView.prototype, "win");
+      var gameView = new app.GameView;
+      $("#0").click();
+      $("#3").click();
+      $("#1").click();
+      $("#4").click();
+      $("#2").click();
+      expect(spy).toHaveBeenCalled()    
+    });
+    it("displays a message about Player X in the message div on horizontal win", function() {
+      setFixtures('<div id="container"></div>');
+      var gameView = new app.GameView;
+      $("#0").click();
+      $("#3").click();
+      $("#1").click();
+      $("#4").click();
+      $("#2").click();
+      expect($("#message").text()).toEqual("Player X Wins!");  
+    });
+    it("displays a message about Player O in the message div on diagonal win", function() {
+      setFixtures('<div id="container"></div>');
+      var gameView = new app.GameView;
+      $("#3").click();
+      $("#0").click();
+      $("#1").click();
+      $("#4").click();
+      $("#2").click();
+      $("#8").click();
+      expect($("#message").text()).toEqual("Player O Wins!");  
+    });
+    it("clears the table after a person wins, resets turns to 0, clears the board", function() {
+      setFixtures('<div id="container"></div>');
+      var gameView = new app.GameView;
+      $("#3").click();
+      $("#0").click();
+      $("#1").click();
+      $("#4").click();
+      $("#2").click();
+      $("#8").click();
+      expect($("#message").text()).toEqual("Player O Wins!");
+      for(var i=0;i<9;i++){
+        expect($("#" + i).text()).toEqual("");
+      }
+      var tempBoard = gameView.game.get("board");
+      tempBoard.forEach(function(square) {
+        expect(square).toEqual(null);
+      });
+      expect(gameView.game.get("turns")).toEqual(0);
+    });
+  });
+  describe( "#tie", function() {
+   it("displays a message the tie in the message div", function() {
+      setFixtures('<div id="container"></div>');
+      var gameView = new app.GameView;
+      $("#0").click();
+      $("#1").click();
+      $("#4").click();
+      $("#8").click();
+      $("#2").click();
+      $("#6").click();
+      $("#7").click();
+      $("#3").click();
+      $("#5").click();
+      expect($("#message").text()).toEqual("Tie game");  
+    });
+    it("clears the table after a person wins, resets turns to 0, clears the board", function() {
+      setFixtures('<div id="container"></div>');
+      var gameView = new app.GameView;
+      $("#0").click();
+      $("#1").click();
+      $("#4").click();
+      $("#8").click();
+      $("#2").click();
+      $("#6").click();
+      $("#7").click();
+      $("#3").click();
+      $("#5").click();
+      expect($("#message").text()).toEqual("Tie game");
+      for(var i=0;i<9;i++){
+        expect($("#" + i).text()).toEqual("");
+      }
+      var tempBoard = gameView.game.get("board");
+      tempBoard.forEach(function(square) {
+        expect(square).toEqual(null);
+      });
+      expect(gameView.game.get("turns")).toEqual(0);
+    });
   });
 });
