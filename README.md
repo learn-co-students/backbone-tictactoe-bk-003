@@ -1,5 +1,11 @@
 # Backbone Tic-Tac-Toe
 
+## Overview
+* About
+* Instructions
+* Hints: Model
+* Hints: View
+
 You'll be modifying only two files to pass this lab, the model which is here: `js/models/game.js` and the view, which is here: `js/views/gameview.js`.
 
 To view your game, you can simply open `index.html` in the browser.
